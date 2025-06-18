@@ -1,0 +1,70 @@
+06.18 10:36 PM
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
+public class StudentGradeCalculator {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int numSubjects = getPositiveInt(scanner, "Enter the number of subjects: ");
+        int totalMarks = 0;
+
+        for (int i = 1; i <= numSubjects; i++) {
+            int marks = getValidMarks(scanner, i);
+            totalMarks += marks;
+        }
+
+        double averagePercentage = (double) totalMarks / numSubjects;
+        char grade = getGrade(averagePercentage);
+
+        System.out.println("\nResults:");
+        System.out.println("Total Marks: " + totalMarks);
+        System.out.printf("Average Percentage: %.2f%%\n", averagePercentage);
+        System.out.println("Grade: " + grade);
+
+        scanner.close();
+    }
+
+    private static int getPositiveInt(Scanner scanner, String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                int value = scanner.nextInt();
+                if (value > 0) {
+                    return value;
+                } else {
+                    System.out.println("Please enter a positive integer.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                scanner.next(); // Clear the invalid input
+            }
+        }
+    }
+
+    private static int getValidMarks(Scanner scanner, int subjectNumber) {
+        while (true) {
+            try {
+                System.out.print("Enter marks for subject " + subjectNumber + " (0-100): ");
+                int marks = scanner.nextInt();
+                if (marks >= 0 && marks <= 100) {
+                    return marks;
+                } else {
+                    System.out.println("Marks should be between 0 and 100.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+                scanner.next(); // Clear the invalid input
+            }
+        }
+    }
+
+    private static char getGrade(double averagePercentage) {
+        if (averagePercentage >= 90) return 'A';
+        if (averagePercentage >= 80) return 'B';
+        if (averagePercentage >= 70) return 'C';
+        if (averagePercentage >= 60) return 'D';
+        return 'F';
+    }
+}
